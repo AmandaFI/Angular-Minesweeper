@@ -1,5 +1,9 @@
-<button (click)="updateBoard()" [ngSwitch]="status">
-  <p *ngSwitchCase="'Number'">n</p>
+<button
+  (click)="updateBoard()"
+  [ngClass]="{ opened: state === 'Open' }"
+  [ngSwitch]="status"
+>
+  <p *ngSwitchCase="'Number'">{{ state === "Open" ? bombNeighboors : "n" }}</p>
   <p *ngSwitchCase="'Bomb'">b</p>
   <p *ngSwitchCase="'Empty'">e</p>
   <p *ngSwitchDefault>...</p>

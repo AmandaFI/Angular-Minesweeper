@@ -3,8 +3,9 @@
     *ngFor="let cell of row"
     [xCoord]="cell.coords.x"
     [yCoord]="cell.coords.y"
-    [opened]="cell.opened"
+    [state]="cell.state"
     [status]="cell.status"
+    [bombNeighboors]="cell.bombNeighboors"
     (cellClickedEvent)="updateBoard($event)"
   ></app-cell>
 </div>

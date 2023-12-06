@@ -10,14 +10,16 @@ export type Coords = {
 export type Cell = {
   coords: Coords;
   status: CellStatus;
-  opened: boolean;
+  state: CellState;
   bombNeighboors: number | null;
 };
 
 export type CellStatus = 'Bomb' | 'Number' | 'Empty';
+export type CellState = 'Open' | 'Closed' | 'Flagged';
 
-const BOARD_SIZE = 10;
-const N_BOMBS = 50;
+const BOARD_WIDTH = 5;
+const BOARD_HEIGHT = 5;
+const N_BOMBS = 3;
 
 @Component({
   selector: 'app-board',
@@ -41,13 +43,13 @@ export class BoardComponent {
   }
 
   fillBoard() {
-    [...Array(BOARD_SIZE).keys()].forEach((item, xIndex) => {
+    [...Array(BOARD_WIDTH).keys()].forEach((item, xIndex) => {
       this.board[xIndex] = [];
-      [...Array(BOARD_SIZE).keys()].forEach((item, yIndex) => {
+      [...Array(BOARD_HEIGHT).keys()].forEach((item, yIndex) => {
         this.board[xIndex][yIndex] = {
           coords: { x: xIndex, y: yIndex },
           status: 'Empty',
-          opened: false,
+          state: 'Closed',
           bombNeighboors: null,
         };
       });
@@ -56,17 +58,19 @@ export class BoardComponent {
 
   // Desse jeito pode ter menos de n_bombs se acabar repetindo as coords random
   choseBombCells(n_bombs: number) {
-    [...Array(n_bombs).keys()].forEach((item) => {
-      const x = Math.floor(Math.random() * BOARD_SIZE);
-      const y = Math.floor(Math.random() * BOARD_SIZE);
-
-      this.board[x][y].status = 'Bomb';
-    });
+    if (n_bombs >= BOARD_WIDTH * BOARD_HEIGHT) return;
+    while (n_bombs > 0) {
+      const x = Math.floor(Math.random() * BOARD_WIDTH);
+      const y = Math.floor(Math.random() * BOARD_HEIGHT);
+      if (this.board[x][y].status !== 'Bomb') {
+        this.board[x][y].status = 'Bomb';
+        n_bombs--;
+      }
+    }
   }
 
-  neighboorsCoords(cell: Cell) {
-    const { x, y } = cell.coords;
-    const coords = [];
+  neighboorsCoords(coords: Coords) {
+    const { x, y } = coords;
     return [
       { x: x - 1, y: y - 1 },
       { x: x - 1, y },
@@ -81,18 +85,18 @@ export class BoardComponent {
 
   checkNeighboors(cell: Cell) {
     if (cell.status === 'Bomb') return 0;
-    const neighboors = this.neighboorsCoords(cell);
+    const neighboors = this.neighboorsCoords(cell.coords);
     let bombs = 0;
     neighboors.forEach(({ x, y }) => {
-      if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE)
+      if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT)
         if (this.board[x][y].status === 'Bomb') bombs++;
     });
     return bombs;
   }
 
   setBombNeighboorsCount() {
-    for (let x = 0; x < BOARD_SIZE; x++) {
-      for (let y = 0; y < BOARD_SIZE; y++) {
+    for (let x = 0; x < BOARD_WIDTH; x++) {
+      for (let y = 0; y < BOARD_HEIGHT; y++) {
         const bombNeighboors = this.checkNeighboors(this.board[x][y]);
         if (bombNeighboors) {
           this.board[x][y].status = 'Number';
@@ -102,8 +106,39 @@ export class BoardComponent {
     }
   }
 
+  floodFill(coords: Coords) {
+    const { x, y } = coords;
+    if (
+      this.board[x][y].status !== 'Empty' ||
+      this.board[x][y].state !== 'Closed'
+    )
+      return;
+    this.board[x][y].state = 'Open';
+
+    this.neighboorsCoords(coords).forEach((item) => {
+      const { x, y } = item;
+      if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT)
+        this.floodFill(item);
+    });
+  }
+
   updateBoard(coords: Coords) {
     const { x, y } = coords;
-    if (this.board[x][y].status === 'Bomb') window.alert('Game over.');
+    console.log(this.board[x][y].status);
+    switch (this.board[x][y].status) {
+      case 'Bomb':
+        window.alert('Game over.');
+        break;
+      case 'Number':
+        this.board[x][y].state = 'Open';
+        break;
+      case 'Empty':
+        this.floodFill(coords);
+        break;
+      default:
+        //eslint-disable-next-line no-case-declarations, @typescript-eslint/no-unused-vars
+        // const _exhaustiveCheck: never = this.board[x][y].status;
+        break;
+    }
   }
 }
