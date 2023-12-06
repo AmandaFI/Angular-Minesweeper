@@ -31,6 +31,7 @@ const N_BOMBS = 3;
 export class BoardComponent {
   board: Cell[][] = [];
   bombCellsCoords: number[] = [];
+  openCells = 0;
 
   constructor() {
     this.initializeGame();
@@ -43,20 +44,19 @@ export class BoardComponent {
   }
 
   fillBoard() {
-    [...Array(BOARD_WIDTH).keys()].forEach((item, xIndex) => {
+    for (let xIndex = 0; xIndex < BOARD_WIDTH; xIndex++) {
       this.board[xIndex] = [];
-      [...Array(BOARD_HEIGHT).keys()].forEach((item, yIndex) => {
+      for (let yIndex = 0; yIndex < BOARD_HEIGHT; yIndex++) {
         this.board[xIndex][yIndex] = {
           coords: { x: xIndex, y: yIndex },
           status: 'Empty',
           state: 'Closed',
           bombNeighboors: null,
         };
-      });
-    });
+      }
+    }
   }
 
-  // Desse jeito pode ter menos de n_bombs se acabar repetindo as coords random
   choseBombCells(n_bombs: number) {
     if (n_bombs >= BOARD_WIDTH * BOARD_HEIGHT) return;
     while (n_bombs > 0) {
@@ -80,7 +80,9 @@ export class BoardComponent {
       { x: x + 1, y: y - 1 },
       { x: x + 1, y },
       { x: x + 1, y: y + 1 },
-    ];
+    ].filter(
+      ({ x, y }) => x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT
+    );
   }
 
   checkNeighboors(cell: Cell) {
@@ -88,8 +90,7 @@ export class BoardComponent {
     const neighboors = this.neighboorsCoords(cell.coords);
     let bombs = 0;
     neighboors.forEach(({ x, y }) => {
-      if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT)
-        if (this.board[x][y].status === 'Bomb') bombs++;
+      if (this.board[x][y].status === 'Bomb') bombs++;
     });
     return bombs;
   }
@@ -106,6 +107,16 @@ export class BoardComponent {
     }
   }
 
+  victory() {
+    return this.openCells === BOARD_WIDTH * BOARD_HEIGHT - N_BOMBS;
+  }
+
+  openCell({ x, y }: Coords) {
+    this.board[x][y].state = 'Open';
+    this.openCells++;
+    if (this.victory()) window.alert('Victory!');
+  }
+
   floodFill(coords: Coords) {
     const { x, y } = coords;
     if (
@@ -113,13 +124,8 @@ export class BoardComponent {
       this.board[x][y].state !== 'Closed'
     )
       return;
-    this.board[x][y].state = 'Open';
-
-    this.neighboorsCoords(coords).forEach((item) => {
-      const { x, y } = item;
-      if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT)
-        this.floodFill(item);
-    });
+    this.openCell(coords);
+    this.neighboorsCoords(coords).forEach((item) => this.floodFill(item));
   }
 
   updateBoard(coords: Coords) {
@@ -130,7 +136,7 @@ export class BoardComponent {
         window.alert('Game over.');
         break;
       case 'Number':
-        this.board[x][y].state = 'Open';
+        this.openCell(coords);
         break;
       case 'Empty':
         this.floodFill(coords);
