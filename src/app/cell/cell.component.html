@@ -1,0 +1,6 @@
+<button (click)="updateBoard()" [ngSwitch]="status">
+  <p *ngSwitchCase="'Number'">n</p>
+  <p *ngSwitchCase="'Bomb'">b</p>
+  <p *ngSwitchCase="'Empty'">e</p>
+  <p *ngSwitchDefault>...</p>
+</button>
