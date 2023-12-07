@@ -1,6 +1,8 @@
 <button
-  (click)="updateBoard()"
-  [ngClass]="{ opened: state === 'Open' }"
+  [ngStyle]="styles"
+  [ngClass]="{ opened: state === 'Open', closed: state === 'Closed' }"
+  (click)="cellClick()"
+  (dblclick)="cellDoubleClick()"
   [ngSwitch]="status"
 >
   <p *ngSwitchCase="'Number'">{{ state === "Open" ? bombNeighboors : "n" }}</p>

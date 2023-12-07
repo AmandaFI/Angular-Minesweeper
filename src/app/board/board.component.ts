@@ -17,9 +17,9 @@ export type Cell = {
 export type CellStatus = 'Bomb' | 'Number' | 'Empty';
 export type CellState = 'Open' | 'Closed' | 'Flagged';
 
-const BOARD_WIDTH = 5;
-const BOARD_HEIGHT = 5;
-const N_BOMBS = 3;
+const BOARD_WIDTH = 10;
+const BOARD_HEIGHT = 10;
+const N_BOMBS = 20;
 
 @Component({
   selector: 'app-board',
@@ -39,8 +39,8 @@ export class BoardComponent {
 
   initializeGame() {
     this.fillBoard();
-    this.choseBombCells(N_BOMBS);
-    this.setBombNeighboorsCount();
+    this.spreadBombs(N_BOMBS);
+    this.setCellBombCountNeighboors();
   }
 
   fillBoard() {
@@ -57,7 +57,7 @@ export class BoardComponent {
     }
   }
 
-  choseBombCells(n_bombs: number) {
+  spreadBombs(n_bombs: number) {
     if (n_bombs >= BOARD_WIDTH * BOARD_HEIGHT) return;
     while (n_bombs > 0) {
       const x = Math.floor(Math.random() * BOARD_WIDTH);
@@ -85,7 +85,7 @@ export class BoardComponent {
     );
   }
 
-  checkNeighboors(cell: Cell) {
+  countBombNeighboors(cell: Cell) {
     if (cell.status === 'Bomb') return 0;
     const neighboors = this.neighboorsCoords(cell.coords);
     let bombs = 0;
@@ -95,10 +95,10 @@ export class BoardComponent {
     return bombs;
   }
 
-  setBombNeighboorsCount() {
+  setCellBombCountNeighboors() {
     for (let x = 0; x < BOARD_WIDTH; x++) {
       for (let y = 0; y < BOARD_HEIGHT; y++) {
-        const bombNeighboors = this.checkNeighboors(this.board[x][y]);
+        const bombNeighboors = this.countBombNeighboors(this.board[x][y]);
         if (bombNeighboors) {
           this.board[x][y].status = 'Number';
           this.board[x][y].bombNeighboors = bombNeighboors;
@@ -120,11 +120,12 @@ export class BoardComponent {
   floodFill(coords: Coords) {
     const { x, y } = coords;
     if (
-      this.board[x][y].status !== 'Empty' ||
-      this.board[x][y].state !== 'Closed'
+      this.board[x][y].state !== 'Closed' ||
+      this.board[x][y].status === 'Bomb'
     )
       return;
     this.openCell(coords);
+    if (this.board[x][y].status === 'Number') return;
     this.neighboorsCoords(coords).forEach((item) => this.floodFill(item));
   }
 
