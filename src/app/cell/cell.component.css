@@ -1,9 +1,13 @@
+.cell {
+  width: "3rem";
+  height: "2rem";
+  background-color: "yellow";
+}
+
 .opened {
   background-color: aqua;
-  font-weight: "bold";
 }
 
 .closed {
   background-color: "yellow";
-  font-weight: "normal";
 }

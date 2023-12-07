@@ -17,9 +17,9 @@ export type Cell = {
 export type CellStatus = 'Bomb' | 'Number' | 'Empty';
 export type CellState = 'Open' | 'Closed' | 'Flagged';
 
-const BOARD_WIDTH = 10;
-const BOARD_HEIGHT = 10;
-const N_BOMBS = 20;
+const BOARD_WIDTH = 15;
+const BOARD_HEIGHT = 20;
+const N_BOMBS = 50;
 
 @Component({
   selector: 'app-board',

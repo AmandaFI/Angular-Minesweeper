@@ -1,12 +1,17 @@
+<!-- [ngStyle]="styles" -->
+<!-- (click)="cellClick()"
+(dblclick)="cellDoubleClick()" -->
 <button
-  [ngStyle]="styles"
-  [ngClass]="{ opened: state === 'Open', closed: state === 'Closed' }"
-  (click)="cellClick()"
-  (dblclick)="cellDoubleClick()"
+  [ngClass]="{ opened: state === 'Open' }"
   [ngSwitch]="status"
+  appDoubleClick
+  (singleClick)="singleClick($event)"
+  (doubleClick)="doubleClick($event)"
 >
-  <p *ngSwitchCase="'Number'">{{ state === "Open" ? bombNeighboors : "n" }}</p>
-  <p *ngSwitchCase="'Bomb'">b</p>
-  <p *ngSwitchCase="'Empty'">e</p>
-  <p *ngSwitchDefault>...</p>
+  <ng-container *ngSwitchCase="'Number'">
+    {{ state === "Open" ? bombNeighboors : "n" }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'Bomb'">b</ng-container>
+  <ng-container *ngSwitchCase="'Empty'">e</ng-container>
+  <ng-container *ngSwitchDefault>...</ng-container>
 </button>
