@@ -1,11 +1,7 @@
 <div *ngFor="let row of board">
   <app-cell
     *ngFor="let cell of row"
-    [xCoord]="cell.coords.x"
-    [yCoord]="cell.coords.y"
-    [state]="cell.state"
-    [status]="cell.status"
-    [bombNeighboors]="cell.bombNeighboors"
+    [cell]="cell"
     (cellClickedEvent)="updateBoard($event)"
   ></app-cell>
 </div>

@@ -7,15 +7,15 @@ export type Coords = {
   y: number;
 };
 
+export type CellStatus = 'Bomb' | 'Number' | 'Empty';
+export type CellState = 'Open' | 'Closed' | 'Flagged';
+
 export type Cell = {
   coords: Coords;
   status: CellStatus;
   state: CellState;
   bombNeighboors: number | null;
 };
-
-export type CellStatus = 'Bomb' | 'Number' | 'Empty';
-export type CellState = 'Open' | 'Closed' | 'Flagged';
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 20;
@@ -131,7 +131,6 @@ export class BoardComponent {
 
   updateBoard(coords: Coords) {
     const { x, y } = coords;
-    console.log(this.board[x][y].status);
     switch (this.board[x][y].status) {
       case 'Bomb':
         window.alert('Game over.');
@@ -143,7 +142,6 @@ export class BoardComponent {
         this.floodFill(coords);
         break;
       default:
-        //eslint-disable-next-line no-case-declarations, @typescript-eslint/no-unused-vars
         // const _exhaustiveCheck: never = this.board[x][y].status;
         break;
     }
