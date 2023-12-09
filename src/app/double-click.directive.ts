@@ -9,21 +9,18 @@ export class DoubleClickDirective {
   @Output() doubleClick = new EventEmitter();
 
   isSingleClick = false;
-  singleClickTimeout: any = undefined;
 
   constructor() {}
 
-  @HostListener('click', ['$event']) onClick(e: any) {
+  @HostListener('click', ['$event']) onClick(e: MouseEvent) {
     this.isSingleClick = true;
-    console.log('directive single click');
-    this.singleClickTimeout = setTimeout(() => {
+    setTimeout(() => {
       if (this.isSingleClick) this.singleClick.emit(e);
     }, 250);
   }
 
-  @HostListener('dbclick', ['$event']) onDbClick(e: any) {
+  @HostListener('dblclick', ['$event']) onDbClick(e: MouseEvent) {
     this.isSingleClick = false;
-    clearTimeout(this.singleClickTimeout);
     this.doubleClick.emit(e);
   }
 }

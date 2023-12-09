@@ -1,6 +1,8 @@
 <!-- [ngStyle]="styles" -->
-<!-- (click)="cellClick()"
-(dblclick)="cellDoubleClick()" -->
+
+<!-- (click)="singleClick()"
+(dblclick)="doubleClick()" -->
+
 <button
   [ngClass]="{ opened: state === 'Open' }"
   [ngSwitch]="status"

@@ -29,6 +29,7 @@ export class CellComponent implements OnInit, OnChanges {
 
   styles: Record<string, string> = {};
   singleClickTimeout: any;
+  isSingleClick = false;
 
   // constructor rda antes de settar as properties recebidas por input
   // ngOnInit roda depois, ou seja, essas variaveis já tem valor
@@ -36,6 +37,7 @@ export class CellComponent implements OnInit, OnChanges {
   constructor() {}
   ngOnInit(): void {
     this.initializaStyles();
+    this.singleClickTimeout = undefined;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -52,16 +54,36 @@ export class CellComponent implements OnInit, OnChanges {
     };
   }
 
-  singleClick(e: any) {
-    this.singleClickTimeout = setTimeout(() => {
-      if (this.state !== 'Open' && this.xCoord !== null && this.yCoord !== null)
-        this.cellClickedEvent.emit({ x: this.xCoord, y: this.yCoord });
-    }, 1000);
+  // Using directive
+  singleClick(e: MouseEvent) {
+    console.log('component single click');
+
+    if (this.state !== 'Open' && this.xCoord !== null && this.yCoord !== null)
+      this.cellClickedEvent.emit({ x: this.xCoord, y: this.yCoord });
   }
 
-  doubleClick(e: any) {
-    clearTimeout(this.singleClickTimeout);
-    this.singleClickTimeout = undefined;
-    console.log('double');
+  doubleClick(e: MouseEvent) {
+    console.log('component double click');
+
+    //console.log(this.singleClickTimeout);
   }
+
+  //clear timeout não estava limpando
+
+  // Using directly the events
+  // singleClick() {
+  //   console.log('component single click');
+  //   this.isSingleClick = true;
+  //   setTimeout(() => {
+  //     console.log(this.isSingleClick);
+  //     if (!this.isSingleClick) return;
+  //     if (this.state !== 'Open' && this.xCoord !== null && this.yCoord !== null)
+  //       this.cellClickedEvent.emit({ x: this.xCoord, y: this.yCoord });
+  //   }, 1000);
+  // }
+
+  // doubleClick() {
+  //   console.log('component double click');
+  //   this.isSingleClick = false;
+  // }
 }
