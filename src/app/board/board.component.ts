@@ -19,7 +19,14 @@ export type Cell = {
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 20;
-const N_BOMBS = 50;
+const N_BOMBS = 30;
+
+// TODO
+// - escolher cores
+// - colocar icones para bomba e flag
+// - botão de reiniciar o jogo
+// - quando clicar em bomba, encerrar o jogo
+// - permitir escolher entre 3 tamanhos de tabuleir
 
 @Component({
   selector: 'app-board',

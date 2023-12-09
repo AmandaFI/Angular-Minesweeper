@@ -26,9 +26,6 @@ export class CellComponent implements OnInit {
   styles: Record<string, string> = {};
   isSingleClick = false;
 
-  // constructor rda antes de settar as properties recebidas por input
-  // ngOnInit roda depois, ou seja, essas variaveis já tem valor
-
   constructor() {}
 
   ngOnInit(): void {}
@@ -36,7 +33,7 @@ export class CellComponent implements OnInit {
   // Using directive
   singleClick(e: MouseEvent) {
     if (
-      this.cell?.state !== 'Open' &&
+      this.cell?.state === 'Closed' &&
       !(this.cell?.coords.x == null) &&
       !(this.cell?.coords.y == null)
     )
@@ -52,6 +49,9 @@ export class CellComponent implements OnInit {
     if (this.cell.state === 'Closed') this.cell.state = 'Flagged';
     else if (this.cell.state === 'Flagged') this.cell.state = 'Closed';
   }
+
+  // constructor roda antes de settar as properties recebidas por input
+  // ngOnInit roda depois, ou seja, essas variaveis já tem valor
 
   //clear timeout não estava limpando
 

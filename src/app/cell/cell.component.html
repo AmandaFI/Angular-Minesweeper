@@ -2,7 +2,7 @@
 <!-- (click)="singleClick()"
 (dblclick)="doubleClick()" -->
 
-<button
+<!-- <button
   [ngClass]="{ opened: cell?.state === 'Open', closed: cell?.state !== 'Open' }"
   [ngSwitch]="cell?.status"
   appDoubleClick
@@ -10,9 +10,25 @@
   (doubleClick)="doubleClick($event)"
 >
   <ng-container *ngSwitchCase="'Number'">
-    {{ cell?.state === "Open" ? cell?.bombNeighboors : "n" }}
+    {{ cell?.state === "Open" ? cell?.bombNeighboors : "&nbsp;&nbsp;" }}
   </ng-container>
-  <ng-container *ngSwitchCase="'Bomb'">b</ng-container>
-  <ng-container *ngSwitchCase="'Empty'">&nbsp;</ng-container>
-  <ng-container *ngSwitchDefault>...</ng-container>
+  <ng-container *ngSwitchCase="'Bomb'">&nbsp;&nbsp;</ng-container>
+  <ng-container *ngSwitchCase="'Empty'">&nbsp;&nbsp;</ng-container>
+  <ng-container *ngSwitchDefault>&nbsp;&nbsp;</ng-container>
+</button> -->
+
+<button
+  [ngClass]="{ opened: cell?.state === 'Open', closed: cell?.state !== 'Open' }"
+  appDoubleClick
+  (singleClick)="singleClick($event)"
+  (doubleClick)="doubleClick($event)"
+>
+  <ng-container *ngIf="cell?.state === 'Flagged'">f&nbsp;</ng-container>
+  <ng-container *ngIf="cell?.state === 'Open' && cell?.status === 'Number'">{{
+    cell?.bombNeighboors
+  }}</ng-container>
+  <ng-container *ngIf="cell?.state === 'Open' && cell?.status === 'Empty'"
+    >&nbsp;&nbsp;</ng-container
+  >
+  <ng-container *ngIf="cell?.state === 'Closed'">&nbsp;&nbsp;</ng-container>
 </button>
