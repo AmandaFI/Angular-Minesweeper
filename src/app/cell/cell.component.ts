@@ -1,15 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { Cell, Coords } from '../board/board.component';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DoubleClickDirective } from '../double-click.directive';
+import { Cell } from '../Classes/Cell';
 
 @Component({
   selector: 'app-cell',
@@ -18,36 +10,20 @@ import { DoubleClickDirective } from '../double-click.directive';
   templateUrl: './cell.component.html',
   styleUrl: './cell.component.css',
 })
-export class CellComponent implements OnInit {
+export class CellComponent {
   @Input() cell: Cell | null = null;
-
-  @Output() cellClickedEvent = new EventEmitter<Coords>();
+  @Output() cellClickEvent = new EventEmitter<Cell | null>();
 
   styles: Record<string, string> = {};
   isSingleClick = false;
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
   // Using directive
   singleClick(e: MouseEvent) {
-    if (
-      this.cell?.state === 'Closed' &&
-      !(this.cell?.coords.x == null) &&
-      !(this.cell?.coords.y == null)
-    )
-      this.cellClickedEvent.emit({
-        x: this.cell.coords.x,
-        y: this.cell.coords.y,
-      });
+    this.cellClickEvent.emit(this.cell);
   }
 
   doubleClick(e: MouseEvent) {
-    if (!this.cell) return;
-
-    if (this.cell.state === 'Closed') this.cell.state = 'Flagged';
-    else if (this.cell.state === 'Flagged') this.cell.state = 'Closed';
+    this.cell?.flag();
   }
 
   // constructor roda antes de settar as properties recebidas por input

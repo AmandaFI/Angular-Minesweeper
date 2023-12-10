@@ -1,7 +1,7 @@
-<div *ngFor="let row of board">
+<div *ngFor="let row of board.cells">
   <app-cell
     *ngFor="let cell of row"
     [cell]="cell"
-    (cellClickedEvent)="updateBoard($event)"
+    (cellClickEvent)="updateBoard($event)"
   ></app-cell>
 </div>
