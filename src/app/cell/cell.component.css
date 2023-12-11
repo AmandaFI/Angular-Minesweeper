@@ -1,9 +1,17 @@
-.opened {
+.cell {
   color: black;
-  background-color: aqua;
+  border-radius: 2px;
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  height: 40px;
+  width: 40px;
+}
+
+.opened {
+  background-color: #ab6832;
 }
 
 .closed {
-  color: black;
-  background-color: yellow;
+  background-color: #49281a;
 }

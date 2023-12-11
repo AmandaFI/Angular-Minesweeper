@@ -16,14 +16,21 @@
   <ng-container *ngSwitchCase="'Empty'">&nbsp;&nbsp;</ng-container>
   <ng-container *ngSwitchDefault>&nbsp;&nbsp;</ng-container>
 </button> -->
+<!-- [ngStyle]="styles" -->
 
 <button
-  [ngClass]="{ opened: cell?.state === 'Open', closed: cell?.state !== 'Open' }"
+  [ngClass]="{
+    opened: cell?.state === 'Open',
+    closed: cell?.state !== 'Open',
+    cell: true
+  }"
   appDoubleClick
   (singleClick)="singleClick($event)"
   (doubleClick)="doubleClick($event)"
 >
-  <ng-container *ngIf="cell?.state === 'Flagged'">f&nbsp;</ng-container>
+  <ng-container *ngIf="cell?.state === 'Flagged'"
+    ><i class="fa-solid fa-mug-hot fa-2xl" style="color: #dfb78c"></i
+  ></ng-container>
   <ng-container *ngIf="cell?.state === 'Open' && cell?.status === 'Number'">{{
     cell?.bombNeighboors
   }}</ng-container>

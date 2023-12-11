@@ -3,5 +3,6 @@
     *ngFor="let cell of row"
     [cell]="cell"
     (cellClickEvent)="updateBoard($event)"
+    (cellFlagged)="forwardEvent($event)"
   ></app-cell>
 </div>

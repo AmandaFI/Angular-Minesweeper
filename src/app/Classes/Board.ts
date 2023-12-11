@@ -7,9 +7,9 @@ type LevelInfo = {
   n_bombs: number;
 };
 
-const levels: Record<Level, LevelInfo> = {
+export const LEVELS: Record<Level, LevelInfo> = {
   Easy: { width: 10, height: 10, n_bombs: 15 },
-  Medium: { width: 15, height: 15, n_bombs: 30 },
+  Medium: { width: 15, height: 15, n_bombs: 10 },
   Hard: { width: 20, height: 20, n_bombs: 40 },
   Expert: { width: 30, height: 30, n_bombs: 60 },
 };
@@ -24,9 +24,9 @@ export class Board {
   openCells = 0;
 
   constructor(level: Level) {
-    this.width = levels[level].width;
-    this.height = levels[level].height;
-    this.n_bombs = levels[level].n_bombs;
+    this.width = LEVELS[level].width;
+    this.height = LEVELS[level].height;
+    this.n_bombs = LEVELS[level].n_bombs;
     this.startGame();
   }
 
@@ -77,6 +77,7 @@ export class Board {
   floodFill(cell: Cell) {
     if (cell.state !== 'Closed' || cell.status === 'Bomb') return;
     cell.open();
+    this.incrementOpenCells();
     if (cell.status === 'Number') return;
     cell
       .neighboors()

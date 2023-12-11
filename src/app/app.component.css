@@ -1,0 +1,53 @@
+.main-div {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  background: #dfb78c;
+  text-align: center;
+  overflow-y: scroll;
+  font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+.board-div {
+  background-color: #49281a;
+  width: max-content;
+  height: max-content;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+  border-radius: 7px;
+}
+
+.btns-div {
+  background: #dfb78c;
+  padding: 7px;
+  border-radius: 7px;
+
+  display: flex;
+  justify-content: space-between;
+  font-size: large;
+  font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+.top-btns-div {
+  margin-top: 2px;
+  margin-bottom: 7px;
+}
+
+.bottom-btns-div {
+  margin-top: 7px;
+  margin-bottom: 2px;
+}
+
+.btns {
+  font-size: large;
+  font-family: Comic Sans MS, Comic Sans, cursive;
+  background-color: #ab6832;
+  border-radius: 7px;
+  border-color: #ab6832;
+  border-style: solid;
+}

@@ -1,6 +1,23 @@
 <main class="main">
-  <h1>Minesweeper!</h1>
-  <app-board></app-board>
+  <div class="main-div">
+    <h1>Minesweeper! (Coffee edition)</h1>
+    <div class="board-div">
+      <div class="btns-div top-btns-div">
+        <span>Mugs remaining: {{ bombsRemaining }}</span>
+        <button class="btns">Restart</button>
+      </div>
+      <app-board
+        [level]="level"
+        (cellFlagged)="updateDisplay($event)"
+      ></app-board>
+      <div class="btns-div bottom-btns-div">
+        <button class="btns" (click)="changeLevel('Easy')">Easy</button>
+        <button class="btns" (click)="changeLevel('Medium')">Medium</button>
+        <button class="btns" (click)="changeLevel('Hard')">Hard</button>
+        <button class="btns" (click)="changeLevel('Expert')">Expert</button>
+      </div>
+    </div>
+  </div>
 </main>
 
 <router-outlet></router-outlet>
