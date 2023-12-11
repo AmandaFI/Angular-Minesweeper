@@ -4,10 +4,11 @@
     <div class="board-div">
       <div class="btns-div top-btns-div">
         <span>Mugs remaining: {{ bombsRemaining }}</span>
-        <button class="btns">Restart</button>
+        <button class="btns" (click)="restartGame()">Restart</button>
       </div>
       <app-board
         [level]="level"
+        [restart]="restart"
         (cellFlagged)="updateDisplay($event)"
       ></app-board>
       <div class="btns-div bottom-btns-div">

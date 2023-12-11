@@ -25,6 +25,7 @@ export class AppComponent {
   title = 'minesweeper';
 
   level: Level = 'Easy';
+  restart = false;
   bombsRemaining = LEVELS[this.level].n_bombs;
 
   changeLevel(level: Level) {
@@ -45,5 +46,8 @@ export class AppComponent {
     }
   }
 
-  restartGame() {}
+  restartGame() {
+    this.restart = !this.restart;
+    this.bombsRemaining = LEVELS[this.level].n_bombs;
+  }
 }

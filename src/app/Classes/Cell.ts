@@ -17,7 +17,7 @@ export class Cell {
   }
 
   open() {
-    this.state = 'Open';
+    if (this.state === 'Closed') this.state = 'Open';
   }
 
   flag() {

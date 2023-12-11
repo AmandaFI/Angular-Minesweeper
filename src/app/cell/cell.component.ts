@@ -26,9 +26,10 @@ export class CellComponent {
 
   doubleClick(e: MouseEvent) {
     this.cell?.flag();
-    this.cellFlagged.emit(
-      this.cell?.state === 'Flagged' ? 'Decrement' : 'Increment'
-    );
+    if (this.cell?.state != 'Open')
+      this.cellFlagged.emit(
+        this.cell?.state === 'Flagged' ? 'Decrement' : 'Increment'
+      );
   }
 
   // constructor roda antes de settar as properties recebidas por input

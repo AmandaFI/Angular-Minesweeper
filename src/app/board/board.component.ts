@@ -13,8 +13,7 @@ import { Cell } from '../Classes/Cell';
 import { Operation } from '../app.component';
 
 // TODO
-// - colocar icones para bomba e flag
-// - botão de reiniciar o jogo
+// Bomb bug
 
 @Component({
   selector: 'app-board',
@@ -26,6 +25,7 @@ import { Operation } from '../app.component';
 export class BoardComponent implements OnChanges {
   // Constructor roda antes da property de input chegar, OnInit roda depois
   @Input() level: Level = 'Easy';
+  @Input() restart: boolean = false;
   @Output() cellFlagged = new EventEmitter<Operation>();
 
   board: Board = new Board(this.level);
@@ -38,6 +38,7 @@ export class BoardComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['level']) this.board = new Board(this.level);
+    if (changes['restart']) this.restartGame();
   }
 
   updateBoard(cell: Cell | null) {
@@ -64,6 +65,7 @@ export class BoardComponent implements OnChanges {
   restartGame() {
     this.board = new Board(this.level);
     this.freezeGame = false;
+    this.restart = false;
   }
 
   gameOver() {

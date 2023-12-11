@@ -9,9 +9,9 @@ type LevelInfo = {
 
 export const LEVELS: Record<Level, LevelInfo> = {
   Easy: { width: 10, height: 10, n_bombs: 15 },
-  Medium: { width: 15, height: 15, n_bombs: 10 },
-  Hard: { width: 20, height: 20, n_bombs: 40 },
-  Expert: { width: 30, height: 30, n_bombs: 60 },
+  Medium: { width: 15, height: 15, n_bombs: 30 },
+  Hard: { width: 15, height: 25, n_bombs: 50 },
+  Expert: { width: 20, height: 30, n_bombs: 90 },
 };
 
 export class Board {
