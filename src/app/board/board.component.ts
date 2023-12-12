@@ -8,12 +8,14 @@ import {
 } from '@angular/core';
 import { CellComponent } from '../cell/cell.component';
 import { CommonModule } from '@angular/common';
-import { Board, Level } from '../Classes/Board';
-import { Cell } from '../Classes/Cell';
+import { Board, Level } from '../models/board';
+import { Cell } from '../models/cell';
 import { Operation } from '../app.component';
 
-// TODO
-// Bomb bug
+const GAME_OVER_MESSAGE =
+  'Game over, you spilled a cup of coffee. Do you want to start a new game ?';
+const VICTORY_MESSAGE =
+  'Congratulation, you found all the cups! Do you want to start a new game ?';
 
 @Component({
   selector: 'app-board',
@@ -31,10 +33,6 @@ export class BoardComponent implements OnChanges {
   board: Board = new Board(this.level);
 
   freezeGame = false;
-  gameOverMessage =
-    'Game over, you spilled a cup of coffee. Do you want to start a new game ?';
-  victoryMessage =
-    'Congratulation, you found all the cups! Do you want to start a new game ?';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['level']) this.board = new Board(this.level);
@@ -56,9 +54,10 @@ export class BoardComponent implements OnChanges {
         this.board.floodFill(cell);
         if (this.board.victory()) this.victory();
         break;
-      default:
-        // const _exhaustiveCheck: never = this.board[x][y].status;
+      default: {
+        const _exhaustiveCheck: never = cell.status;
         break;
+      }
     }
   }
 
@@ -69,12 +68,12 @@ export class BoardComponent implements OnChanges {
   }
 
   gameOver() {
-    if (window.confirm(this.gameOverMessage)) this.restartGame();
+    if (window.confirm(GAME_OVER_MESSAGE)) this.restartGame();
     else this.freezeGame = true;
   }
 
   victory() {
-    if (window.confirm(this.victoryMessage)) this.restartGame();
+    if (window.confirm(VICTORY_MESSAGE)) this.restartGame();
     else this.freezeGame = true;
   }
 

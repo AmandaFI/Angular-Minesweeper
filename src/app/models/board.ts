@@ -1,23 +1,30 @@
-import { Cell, Coords } from './Cell';
+import { Cell, Coords } from './cell';
 
 export type Level = 'Easy' | 'Medium' | 'Hard' | 'Expert';
 type LevelInfo = {
   width: number;
   height: number;
-  n_bombs: number;
+  nBombs: number;
 };
 
 export const LEVELS: Record<Level, LevelInfo> = {
-  Easy: { width: 10, height: 10, n_bombs: 15 },
-  Medium: { width: 15, height: 15, n_bombs: 30 },
-  Hard: { width: 15, height: 25, n_bombs: 50 },
-  Expert: { width: 20, height: 30, n_bombs: 90 },
+  Easy: { width: 10, height: 10, nBombs: 15 },
+  Medium: { width: 15, height: 15, nBombs: 30 },
+  Hard: { width: 15, height: 25, nBombs: 50 },
+  Expert: { width: 20, height: 30, nBombs: 90 },
 };
+
+// export const LEVELS = {
+//   Easy: { width: 10, height: 10, nBombs: 15 },
+//   Medium: { width: 15, height: 15, nBombs: 30 },
+//   Hard: { width: 15, height: 25, nBombs: 50 },
+//   Expert: { width: 20, height: 30, nBombs: 90 },
+// } satisfies Record<Level, LevelInfo>;
 
 export class Board {
   width: number;
   height: number;
-  n_bombs: number;
+  nBombs: number;
 
   cells: Cell[][] = [];
   bombCellsCoords: Coords[] = [];
@@ -26,14 +33,14 @@ export class Board {
   constructor(level: Level) {
     this.width = LEVELS[level].width;
     this.height = LEVELS[level].height;
-    this.n_bombs = LEVELS[level].n_bombs;
+    this.nBombs = LEVELS[level].nBombs;
     this.startGame();
   }
 
   startGame() {
     this.initializaBoard();
     this.spreadBombs();
-    this.setBombNeighboors();
+    this.setBombNeighbors();
   }
 
   initializaBoard() {
@@ -45,7 +52,7 @@ export class Board {
   }
 
   spreadBombs() {
-    let bombsToSpread = this.n_bombs;
+    let bombsToSpread = this.nBombs;
     while (bombsToSpread > 0) {
       const x = Math.floor(Math.random() * this.width);
       const y = Math.floor(Math.random() * this.height);
@@ -57,19 +64,21 @@ export class Board {
     }
   }
 
-  setBombNeighboors() {
+  setBombNeighbors() {
     this.bombCellsCoords.forEach(({ x, y }) => {
       this.cells[x][y]
-        .neighboors()
+        .neighbors()
         .filter(
           ({ x, y }) => x >= 0 && x < this.width && y >= 0 && y < this.height
         )
         .forEach(({ x, y }) => {
           const cell = this.cells[x][y];
-          if (cell.bombNeighboors === null) {
-            cell.bombNeighboors = 1;
-            cell.status = 'Number';
-          } else cell.bombNeighboors += 1;
+          if (cell.status !== 'Bomb') {
+            if (cell.bombNeighbors === null) {
+              cell.bombNeighbors = 1;
+              cell.status = 'Number';
+            } else cell.bombNeighbors += 1;
+          }
         });
     });
   }
@@ -80,7 +89,7 @@ export class Board {
     this.incrementOpenCells();
     if (cell.status === 'Number') return;
     cell
-      .neighboors()
+      .neighbors()
       .filter(
         ({ x, y }) => x >= 0 && x < this.width && y >= 0 && y < this.height
       )
@@ -92,6 +101,6 @@ export class Board {
   }
 
   victory() {
-    return this.openCells === this.width * this.height - this.n_bombs;
+    return this.openCells === this.width * this.height - this.nBombs;
   }
 }

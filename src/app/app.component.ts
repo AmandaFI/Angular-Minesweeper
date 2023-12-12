@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from './board/board.component';
 import { CellComponent } from './cell/cell.component';
 import { DoubleClickDirective } from './double-click.directive';
-import { LEVELS, Level } from './Classes/Board';
+import { LEVELS, Level } from './models/board';
 
 export type Operation = 'Increment' | 'Decrement';
 
@@ -26,11 +26,11 @@ export class AppComponent {
 
   level: Level = 'Easy';
   restart = false;
-  bombsRemaining = LEVELS[this.level].n_bombs;
+  bombsRemaining = LEVELS[this.level].nBombs;
 
   changeLevel(level: Level) {
     this.level = level;
-    this.bombsRemaining = LEVELS[level].n_bombs;
+    this.bombsRemaining = LEVELS[level].nBombs;
   }
 
   updateDisplay(operation: any) {
@@ -48,6 +48,6 @@ export class AppComponent {
 
   restartGame() {
     this.restart = !this.restart;
-    this.bombsRemaining = LEVELS[this.level].n_bombs;
+    this.bombsRemaining = LEVELS[this.level].nBombs;
   }
 }

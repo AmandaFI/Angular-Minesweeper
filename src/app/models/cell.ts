@@ -10,7 +10,7 @@ export class Cell {
   coords: Coords;
   status: CellStatus = 'Empty';
   state: CellState = 'Closed';
-  bombNeighboors: number | null = null;
+  bombNeighbors: number | null = null;
 
   constructor(coords: Coords) {
     this.coords = coords;
@@ -25,7 +25,7 @@ export class Cell {
     this.state = this.state === 'Closed' ? 'Flagged' : 'Closed';
   }
 
-  neighboors() {
+  neighbors() {
     const { x, y } = this.coords;
     return [
       { x: x - 1, y: y - 1 },
