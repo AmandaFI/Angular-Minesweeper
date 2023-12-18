@@ -14,13 +14,6 @@ export const LEVELS: Record<Level, LevelInfo> = {
   Expert: { width: 20, height: 30, nBombs: 90 },
 };
 
-// export const LEVELS = {
-//   Easy: { width: 10, height: 10, nBombs: 15 },
-//   Medium: { width: 15, height: 15, nBombs: 30 },
-//   Hard: { width: 15, height: 25, nBombs: 50 },
-//   Expert: { width: 20, height: 30, nBombs: 90 },
-// } satisfies Record<Level, LevelInfo>;
-
 export class Board {
   width: number;
   height: number;
